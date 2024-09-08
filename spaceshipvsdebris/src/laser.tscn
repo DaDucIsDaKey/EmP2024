@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://ctne2cgtopuq7"]
+
+[ext_resource type="Texture2D" uid="uid://capy7w8iflh8j" path="res://src/New Piskel-1.png.png" id="1_2th8i"]
+[ext_resource type="Script" path="res://src/laser.gd" id="1_ypc5u"]
+[ext_resource type="AudioStream" uid="uid://bwaiojhmdpv4i" path="res://src/laser-charge-175727.mp3" id="3_pp8n4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_en615"]
+size = Vector2(10, 1000)
+
+[node name="Node2D" type="Area2D"]
+collision_layer = 3
+collision_mask = 2
+script = ExtResource("1_ypc5u")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_en615")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.25, 100)
+texture = ExtResource("1_2th8i")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_pp8n4")

@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://cdydyvbjra37o"]
+
+[ext_resource type="Script" path="res://src/harpoon.gd" id="1_fyino"]
+[ext_resource type="Texture2D" uid="uid://b5rdy1wmdj7kr" path="res://src/grappling hook-01-1.png.png" id="2_lyero"]
+[ext_resource type="Texture2D" uid="uid://2rnvnyd3841a" path="res://src/grappling with broken satellite-01-1.png.png" id="3_6akcp"]
+[ext_resource type="AudioStream" uid="uid://fu3jxyiv40l4" path="res://src/metal-hit-92-200420.mp3" id="4_04olw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gago5"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7s0m3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_lyero")
+}],
+"loop": true,
+"name": &"Phase0",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_6akcp")
+}],
+"loop": true,
+"name": &"Phase1",
+"speed": 5.0
+}]
+
+[node name="Harpoon" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 6
+script = ExtResource("1_fyino")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_gago5")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.066, 0.066)
+sprite_frames = SubResource("SpriteFrames_7s0m3")
+animation = &"Phase0"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_04olw")

@@ -1,0 +1,154 @@
+[gd_scene load_steps=22 format=3 uid="uid://b1lg5tt4cb10a"]
+
+[ext_resource type="PackedScene" uid="uid://c21vl5rdn3lfw" path="res://src/spaceship.tscn" id="1_nsu3s"]
+[ext_resource type="PackedScene" uid="uid://dw21ioabyhs08" path="res://src/fuel_bar.tscn" id="2_egsql"]
+[ext_resource type="Script" path="res://src/score.gd" id="3_3q4jk"]
+[ext_resource type="Texture2D" uid="uid://yrao8pu4p0dl" path="res://src/fuel bar-01.png" id="3_70trs"]
+[ext_resource type="PackedScene" uid="uid://xhyu1hfu162m" path="res://src/summoner.tscn" id="3_qdc7q"]
+[ext_resource type="Script" path="res://src/losescreen.gd" id="4_4ffcv"]
+[ext_resource type="Texture2D" uid="uid://c5abj1tkwlk1l" path="res://src/earth-01.png" id="4_tjbr0"]
+[ext_resource type="FontFile" uid="uid://dmoy2wfnjgcjd" path="res://src/Pixel Sans Serif.ttf" id="4_yiapc"]
+[ext_resource type="Script" path="res://src/earth.gd" id="5_3t8up"]
+[ext_resource type="Texture2D" uid="uid://c5ksupyyudyvo" path="res://src/gameover words-01.png" id="5_isolc"]
+[ext_resource type="Texture2D" uid="uid://c6i8k3puhvn3q" path="res://src/bg stars-01.png" id="6_plk1b"]
+[ext_resource type="Texture2D" uid="uid://cpw58hcli4b5l" path="res://src/fire icon-01-01.png" id="6_wjswr"]
+[ext_resource type="Texture2D" uid="uid://bbyfaurkft7l" path="res://src/RESTART BUTTON-01-1.png.png" id="7_53w22"]
+[ext_resource type="Script" path="res://src/restart.gd" id="8_mwyoi"]
+[ext_resource type="AudioStream" uid="uid://depyrbp0vi5qk" path="res://src/eerie-shimmer-32212.mp3" id="15_nm0ll"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jmoyt"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_owgb1"]
+texture = ExtResource("3_70trs")
+texture_margin_left = 30.0
+texture_margin_top = 30.0
+texture_margin_right = 30.0
+texture_margin_bottom = 30.0
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+draw_center = false
+
+[sub_resource type="Theme" id="Theme_6oeka"]
+default_font = ExtResource("4_yiapc")
+ProgressBar/styles/background = SubResource("StyleBoxTexture_jmoyt")
+ProgressBar/styles/fill = SubResource("StyleBoxTexture_owgb1")
+
+[sub_resource type="LabelSettings" id="LabelSettings_2duct"]
+font = ExtResource("4_yiapc")
+font_size = 80
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7kowc"]
+size = Vector2(1280, 20)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_80uy6"]
+radius = 1375.0
+
+[node name="Root" type="Node2D"]
+
+[node name="HarpoonHolder" type="Node2D" parent="."]
+
+[node name="Spaceship" parent="." node_paths=PackedStringArray("HH") instance=ExtResource("1_nsu3s")]
+position = Vector2(640, 300)
+HH = NodePath("../HarpoonHolder")
+
+[node name="GameUI" type="CanvasLayer" parent="."]
+
+[node name="FuelBar" parent="GameUI" node_paths=PackedStringArray("player") instance=ExtResource("2_egsql")]
+anchors_preset = 3
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -90.0
+offset_top = -920.0
+offset_right = 30.0
+offset_bottom = 680.0
+grow_vertical = 0
+scale = Vector2(0.5, 0.5)
+theme = SubResource("Theme_6oeka")
+fill_mode = 3
+player = NodePath("../../Spaceship")
+
+[node name="Score" type="Label" parent="GameUI" node_paths=PackedStringArray("player")]
+offset_left = 20.0
+offset_right = 60.0
+offset_bottom = 137.0
+label_settings = SubResource("LabelSettings_2duct")
+script = ExtResource("3_3q4jk")
+player = NodePath("../../Spaceship")
+
+[node name="Fire" type="Sprite2D" parent="."]
+position = Vector2(1220, 960)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("6_wjswr")
+
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(640, 500)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_plk1b")
+
+[node name="Summoner" parent="." node_paths=PackedStringArray("player") instance=ExtResource("3_qdc7q")]
+player = NodePath("../Spaceship")
+
+[node name="PauseScreen" type="CanvasLayer" parent="."]
+process_mode = 3
+
+[node name="GameOverScreen" type="TextureRect" parent="PauseScreen"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -740.0
+offset_top = -512.0
+offset_right = 760.0
+offset_bottom = 488.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_isolc")
+expand_mode = 1
+script = ExtResource("4_4ffcv")
+
+[node name="Restart Button" type="Button" parent="PauseScreen/GameOverScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -285.0
+offset_top = 200.0
+offset_right = 1373.0
+offset_bottom = 683.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.35, 0.35)
+icon = ExtResource("7_53w22")
+script = ExtResource("8_mwyoi")
+
+[node name="Ceiling" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ceiling"]
+position = Vector2(640, -10)
+shape = SubResource("RectangleShape2D_7kowc")
+
+[node name="Earth" type="StaticBody2D" parent="."]
+position = Vector2(640, 2200)
+collision_layer = 4
+script = ExtResource("5_3t8up")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Earth"]
+shape = SubResource("CircleShape2D_80uy6")
+
+[node name="Sprite2D" type="Sprite2D" parent="Earth"]
+position = Vector2(0, -75)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("4_tjbr0")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_nm0ll")
+volume_db = -12.0
+autoplay = true
+
+[connection signal="death_screen" from="Spaceship" to="PauseScreen/GameOverScreen" method="_on_spaceship_death_screen"]
+[connection signal="pressed" from="PauseScreen/GameOverScreen/Restart Button" to="PauseScreen/GameOverScreen/Restart Button" method="_on_pressed"]
